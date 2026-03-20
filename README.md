@@ -1,66 +1,50 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/j5u2qjgo)
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=22978777)
-> [!IMPORTANT]
-> Replace this README.md with your own content and use this repo for your project
+# Course Recommendation​ System
+**Authors:** Jiaxin Su
+## Introduction
+Besides being a research institution, UCSB also offers its students a liberal arts education through a wide variety to interesting courses in different subject areas. Especially with the holistic admission process, bringing in well-rounded individuals with many different interests. However, once they’ve been admitted, students are then left to rely on academic advising, hear the words of mouth from their peers, Reddit, or randomly scouring through GOLD minutes before their course registration pass time to find interesting courses outside of their major. In other words, there isn’t a way for students to get tailored list of courses that match their interests at UCSB. For this project, my goal is to streamline the course search process by developing a course recommendation system that suggests UCSB courses to students based on their interests and provides clear, well-supported reasons for each recommendation.
 
-# Final Project
 
-The final assignment for this class is a multi-week project. The project is self-driven but the expectation is that you will work in groups to demonstrate your ability to do something original with your newfound pythonic abilities. 
+## Overview
+I’ll be working with two separate data sets. The first data set contains information about all courses offered at UCSB and the second data set will be about students’ and their extracurricular activities. For UCSB courses information, we plan on using an API. Once I’ve gathered this data, I’ll store it in a csv file and use it build the recommendation system. As for the students’ data set, I’ll use data from “Students Extracurricular Info”, obtained via Kaggle, as the real UCSB student course interest and course history are hard to get.
 
-It’s up to you, but some suggestions include:
 
-- Testing ideas towards a Capstone project
-- Replicating and extending analysis done in a published paper
-- Working with an existing codebase/model to apply an interesting ML method
-- Performing a novel analysis on a dataset
+## Dataset
 
-# Expectations
+### Source
+(1) **student_data.csv**
+The student dataset is from [Kaggle](https://www.kaggle.com/datasets/kamakshilahoti/student-extracurriculars-info). This dataset contains information about students, their academic interests, extracurricular activities, skills, location, year of study, major, GPA, languages spoken, club memberships, and research interests. 
 
-- This should involve original work from your team (size of group: anywhere between 1-38)
-- Level of effort should be ~2-3 weeks worth of work
-- Submission will be a repository including:
-    - Code: your own and perhaps from an existing project
-    - Documentation:
-        - Overview of the problem
-        - Description of the dataset you used (input features, outcome, dimensions, etc)
-        - How to run the code (dependencies, etc.)
-        - Decisions made along the way, including trade-offs (e.g., cut X for time so our solution may lack Y)
-        - Example output (what does it do?)
-        - Citations (data, code, papers)
-    - Short-form presentation (slides and notes or video, not during lecture):
-        - 10 minutes with fellow classmates as the target audience
-        - Problem statement
-        - Existing work you pulled from
-        - Your contribution
-        - Tools/methods used
-        - Issues overcome along the way
-        - PPT or document style OK
+Here's a description of each field in the dataset:
+- StudentID: A unique identifier for each student.
+- Name: The name of the student.
+- AcademicInterest: The field of study or academic interest of the student.
+- ExtracurricularActivities: Extracurricular activities the student is involved in.
+- Skills: Skills possessed by the student.
+- Location: The city or location where the student is currently based.
+- YearOfStudy: The year of study for the student (e.g., Freshman, Junior, Senior, Graduate).
+- Major: The major or field of study that the student is pursuing.
+- GPA: The Grade Point Average of the student.
+- Languages: Languages spoken or known by the student.
+- ClubMemberships: Memberships in various clubs or organizations.
+- ResearchInterests: Research interests or specialization of the student.
 
-# Inspiration
+(2) **Fall2024_Courses.csv**
+The course description data is acquired through [Academic Curriculum v3.0](https://developer.ucsb.edu/content/academic-curriculums#/Classes/Classes_GetClassesAsync). Only the course description and other course information in fall 2024 is loaded for simplicity of this project. 
+The final course csv includes:
+- quarter: the academic quarter in which the course was offered
+- courseId: unique identifier for a course, like ANTH      3
+- title: The full title of each course
+- dept_code: The department where the course happen with its code.
+- description: A brief summary of the course’s core content, typically written in a few sentences.
+- subject_area: the subject area of the course.
+- obj_level: Indicating if the course is graduate(G) or undergraduate level (U)
+- college: the college under which the course is offered.
+- units: The number of units assigned to the course
+- instruction_type1: the primary instruction type of the course, such as seminar (SEM) or lecture (LEC).
+- online_course: A binary variable indicating if the course is offered online.
 
-## Data & code
+**Dimensions:** The dataset includes 2,266 courses offered in Fall 2024 and 1,000 students.
 
-- [The Incredible PyTorch](https://github.com/ritchieng/the-incredible-pytorch)
-    
-    > List of papers, code, examples using PyTorch
-    > 
-- [Kaggle](https://www.kaggle.com)
-    
-    > ML competition/collaboration site
-    > 
-- [Keras code examples](https://keras.io/examples/)
-    
-    > Official examples of implementation using Google’s TensorFlow Keras
-    > 
-- [PLOS papers with available data](https://journals.plos.org/plosone/search?q=data_availability%3A(osf.io%20OR%20github%20OR%20dryad%20OR%20figshare)&page=1)
-    
-    > Searching PLOS for keywords likely to have available data, refine further to get topics interesting to you
-    > 
-- [PLOS recommended repositories](https://journals.plos.org/plosone/s/recommended-repositories) (data, code, and sometimes both)
-    
-    > Lots here, mostly data repositories
-    > 
-- [The Pudding](https://www.pudding.cool)
-    
-    > Visual essays with data
-    >
+
+### How to Run
+
