@@ -46,5 +46,63 @@ The final course csv includes:
 **Dimensions:** The dataset includes 2,266 courses offered in Fall 2024 and 1,000 students.
 
 
-### How to Run
+## How to Run
+### 1. Clone and install dependencies
 
+```bash
+git clone <your-repo-url>
+cd <repo-name>
+pip install -r requirements.txt
+```
+### 2. API Key
+You need an OpenRouter API key (or OpenAI key) to run this project. Get the shared key, or create a free account at [openrouter.ai](https://openrouter.ai).
+Create a `.env` file:
+```
+OPENROUTER_API_KEY=your_key_here
+```
+### 3. Run the notebook
+```
+final.ipynb
+```
+## Dependencies
+
+- Python 3.11+
+- OpenRouter or OpenAI API key
+- Key libraries: `openai-agents`, `pydantic`, `rank-bm25`, `openai`, `pandas`, `python-dotenv`
+
+See `requirements.txt` for the full list.
+
+## Design Decisions & Trade-offs
+**BM25 retrieval as the first-stage recommender:** I kept BM25 as the retrieval backbone because it is fast, interpretable, and already worked well to recommend top 5 courses. The tradeoff is that BM25 depends on lexical overlap, so it may miss semantically relevant matches phrased differently.
+
+**Weighted scoring across student fields:** I assigned higher weights to academic interest, major, and research interests because these seemed most directly related to course relevance. This improves alignment with academic goals, but the weighting scheme is heuristic rather than learned from real enrollment data.
+
+**Year-of-study boosting:** I boosted lower-division courses for freshmen/sophomores and mid-level courses for juniors/seniors to make recommendations more realistic. This adds useful structure, but it is a simple rule and does not account for exceptions such as advanced early students.
+
+**Filtering out 99 and 199 courses:** I excluded 99 and 199 courses because they often represent independent study or research assistant placements that appeared too frequently across students. This improves recommendation quality for general course planning, though it may hide genuinely relevant research opportunities for some students.
+
+**LLM reranking instead of full-catalog LLM recommendation:** I used the LLM only after BM25 retrieval, so it reranks a shortlist rather than searching the entire catalog. This keeps the system more efficient and grounded, but it means the final recommendations are limited by the quality of the BM25 candidate pool.
+
+**OpenRouter/OpenAI-compatible chat model for explanations:** I integrated an LLM to refine the top candidate courses and generate personalized explanations. This makes the system more flexible and user-friendly.
+
+## Example Output
+
+**Selected student:** Student 960, a senior Biology major interested in Physics and Sustainable Agriculture.
+**Pipeline:** The system first retrieves the top 5 courses with the highest BM25 scores, then sends them to the LLM to select and explain the top 3 recommendations.
+
+| Rank | Course ID | Title | BM25 Score |
+|------|-----------|-------|------------|
+| 1 | ESM 224 | SSTNBL WTR RES MGMT | 26.5898 |
+| 2 | EEMB 188RE | CONSERV RESTOR SEM | 24.7586 |
+| 3 | ME 154 | STRUCTURES | 27.6125 |
+
+**LLM explanation:**  
+- **ESM 224** was recommended because it aligns with the student’s sustainability-related research interests.  
+- **EEMB 188RE** fits the student’s biology background and conservation-related themes.  
+- **ME 154** the introductory course in structural analysis and design can enhance the student's understanding of engineering principles, which is beneficial given their interest in physics and leadership skills in project design."
+
+## Citations
+
+- **OpenAI Agents SDK:** https://github.com/openai/openai-agents-python
+- **Academic Curriculum v3.0 API:** https://developer.ucsb.edu/content/academic-curriculums#/Classes/Classes_GetClassesAsync
+- **“Students Extracurricular Info” Data Set:** https://www.kaggle.com/datasets/kamakshilahoti/student-extracurriculars-info
